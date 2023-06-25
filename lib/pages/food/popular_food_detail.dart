@@ -1,9 +1,14 @@
+import 'package:e_commerce/controllers/popular_product_controller.dart';
+import 'package:e_commerce/pages/home/main_food_page.dart';
+import 'package:e_commerce/utils/constants.dart';
 import 'package:e_commerce/utils/dimensions.dart';
 import 'package:e_commerce/widgets/app_column.dart';
 import 'package:e_commerce/widgets/app_icon.dart';
 import 'package:e_commerce/widgets/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 import '../../utils/colors.dart';
 import '../../widgets/big_text.dart';
@@ -11,10 +16,13 @@ import '../../widgets/icon_text_widget.dart';
 import '../../widgets/small_text.dart';
 
 class PopularFoodDetail extends StatelessWidget {
-  const PopularFoodDetail({super.key});
+  int pageId;
+  PopularFoodDetail({super.key, required this.pageId});
 
   @override
   Widget build(BuildContext context) {
+    var product = Get.find<PopularProductController>().popularProductList[pageId];
+
     return  Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -26,11 +34,11 @@ class PopularFoodDetail extends StatelessWidget {
             child: Container(
               width: double.maxFinite,
               height: Dimensions.popularFoodImgSize,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: AssetImage(
-                      "assets/image/food.png"
+                  image: NetworkImage(
+                      Constants.BASE_URL+Constants.UPLOAD_URL+product.img!
                   ),
                 ),
               )
@@ -41,10 +49,13 @@ class PopularFoodDetail extends StatelessWidget {
             top: Dimensions.height45,
             left: Dimensions.width20,
             right: Dimensions.width20,
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppIcon(icon: Icons.arrow_back_ios),
+                GestureDetector(
+                  onTap:(() => const MainFoodPage()),
+                  child: AppIcon(icon: Icons.arrow_back_ios)
+                ),
                 AppIcon(icon: Icons.shopping_cart_outlined),
               ],
             ),
@@ -68,11 +79,11 @@ class PopularFoodDetail extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppColumn(text: "Biriani",),
+                  AppColumn(text: product.name!,),
                   SizedBox(height: Dimensions.height20,),
                   BigText(text: "Introduce", size: Dimensions.font20,),
                   SizedBox(height: Dimensions.height10,),
-                  Expanded(child: const SingleChildScrollView(child: ExpandableText(text: "Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !..Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !..Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !..")))
+                  Expanded(child: SingleChildScrollView(child: ExpandableText(text: product.description!)))
                 ],
               ),
 
@@ -115,11 +126,11 @@ class PopularFoodDetail extends StatelessWidget {
 
             Container(
               padding: EdgeInsets.only(top: Dimensions.height15,bottom: Dimensions.height15, left: Dimensions.width15, right: Dimensions.width15),
-              child: BigText(text: "\$10 | Add to cart",size: Dimensions.font20,color: Colors.white,),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Dimensions.radius20),
                 color: AppColors.mainColor
               ),
+              child: BigText(text: "\$ ${product.price!} | Add to cart",size: Dimensions.font20,color: Colors.white,),
             )
           ],
         ),

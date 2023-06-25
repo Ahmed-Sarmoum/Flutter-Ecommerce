@@ -12,7 +12,6 @@ class Product {
     _offset = offset;
     _products = products;
   }
-
   Product.fromJson(Map<String, dynamic> json) {
     _totalSize = json["totalSize"];
     _typeId = json["typeId"];
@@ -20,7 +19,7 @@ class Product {
     if (json["products"] != null) {
       _products = <ProductModel>[];
       json['products'].forEach((v) {
-        _products!.add(ProductModel.fromJson(v));
+        _products.add(ProductModel.fromJson(v));
       });
     }
   }

@@ -1,27 +1,40 @@
+import 'package:e_commerce/controllers/recommeneded_product_controller.dart';
+import 'package:e_commerce/routes/route_helper.dart';
 import 'package:e_commerce/utils/colors.dart';
+import 'package:e_commerce/utils/constants.dart';
 import 'package:e_commerce/utils/dimensions.dart';
 import 'package:e_commerce/widgets/app_icon.dart';
 import 'package:e_commerce/widgets/big_text.dart';
 import 'package:e_commerce/widgets/expandable_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class RecommendedFoodDetail extends StatelessWidget {
-  const RecommendedFoodDetail({super.key});
+  int pageId;
+  RecommendedFoodDetail({super.key, required this.pageId});
 
   @override
   Widget build(BuildContext context) {
+    var product = Get.find<RecommendedProductController>().recommendedProductList[pageId];
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            automaticallyImplyLeading: false,
             toolbarHeight: 70,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                AppIcon(
-                  icon: Icons.clear,
+                GestureDetector(
+                  onTap: () {
+                      Get.toNamed(RouteHelper.getInitial());
+                  },
+                  child: AppIcon(
+                    icon: Icons.clear,
+                  ),
                 ),
                 AppIcon(
                   icon: Icons.shopping_cart_outlined,
@@ -33,7 +46,7 @@ class RecommendedFoodDetail extends StatelessWidget {
               child: Container(
                 child: Center(
                   child: BigText(
-                    text: "Chinese Side",
+                    text: product.name!,
                     size: Dimensions.font26,
                   ),
                 ),
@@ -52,8 +65,8 @@ class RecommendedFoodDetail extends StatelessWidget {
             backgroundColor: AppColors.yellowColor,
             expandedHeight: 300,
             flexibleSpace: FlexibleSpaceBar(
-              background: Image.asset(
-                "assets/image/food.png",
+              background: Image.network(
+                Constants.BASE_URL+Constants.UPLOAD_URL+product.img!,
                 width: double.maxFinite,
                 fit: BoxFit.cover,
               ),
@@ -67,7 +80,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                     left: Dimensions.width15, right: Dimensions.width15),
                 child: ExpandableText(
                   text:
-                      "Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !..Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !..Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !..Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !..Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !..Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !Chicken marinated in a spicied yoghurt is placed in a larg pot, then layered with tried nions (checkly easy sub below!), fresh coriander/climet, then par boilet !..",
+                      product.description!,
                 ),
               )
             ],
@@ -92,7 +105,7 @@ class RecommendedFoodDetail extends StatelessWidget {
                   iconColor: Colors.white,
                   iconSize: Dimensions.iconSize24,
                 ),
-                BigText(text: '\$12.88'+ ' X ' + '0', size: Dimensions.font26, color: AppColors.mainBlackColor,),
+                BigText(text: '\$ ${product.price!}'+ ' X ' + '0', size: Dimensions.font26, color: AppColors.mainBlackColor,),
                 AppIcon(
                   icon: Icons.add,
                   backgroundColor: AppColors.mainColor,
